@@ -1,0 +1,28 @@
+@extends('layouts.app')
+
+@section('title') Edit @endsection
+@section('content')
+<form action="{{ route('posts.update',1) }}" method="POST">
+    <!-- laravel force while using FORMS we should use @csrf or get error 419 PAGE EXPIRED, use it to protect from csrf attack -->
+    @csrf
+    @method('PUT') <!-- we use this Directive to spoof or cheat these request method form  -->
+    <div class="mt-4">
+        <label class="form-label">Title</label>
+        <input type="text" class="form-control" name="title">
+    </div>
+    <div class="mt-4">
+        <label class="form-label">Description</label>
+        <textarea class="form-control" rows="3" name="description"></textarea>
+    </div>
+    <div class="mt-4 mb-4">
+        <label class="form-label">Post Creator</label>
+        <select class="form-control" name="post_creator">
+            <option>Ahmed</option>
+            <option>Mohamed</option>
+            <option>khaled</option>
+            <option>abdo</option>
+        </select>
+    </div>
+    <button class="btn btn-primary">Update</button>
+</form>
+@endsection
