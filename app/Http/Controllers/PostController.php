@@ -6,18 +6,26 @@ use Illuminate\Http\Request;
 
 use function Laravel\Prompts\info;
 
+use App\Models\Post;
+use App\Models\Customer;
+
 class PostController extends Controller
 {
     public function index()
     {
-        $allPosts = [
-            ['id' => 1, 'title' => 'PHP', 'posted_by' => 'Mohamed', 'created_at' => '22-10-10 09:00:00'],
-            ['id' => 2, 'title' => 'Javascript', 'posted_by' => 'Yassien', 'created_at' => '25-03-18 04:00:00'],
-            ['id' => 3, 'title' => 'HTML', 'posted_by' => 'Maged', 'created_at' => '23-11-25 02:00:00'],
-            ['id' => 4, 'title' => 'CSS', 'posted_by' => 'Abdo', 'created_at' => '26-03-19 01:15:00'],
-            ['id' => 5, 'title' => 'Laravel', 'posted_by' => 'Khaled', 'created_at' => '26-01-01 11:15:00']
-        ];
-        return view('posts.index', ['posts' => $allPosts]);
+        // get all data from database
+            // id,title(VARCHAR),description(TEXT),created_at,updated_at
+
+            $postsFromDB = Post::all(); 
+            return view('posts.index', ['posts' => $postsFromDB]);
+        // $allPosts = [
+        //     ['id' => 1, 'title' => 'PHP', 'posted_by' => 'Mohamed', 'created_at' => '22-10-10 09:00:00'],
+        //     ['id' => 2, 'title' => 'Javascript', 'posted_by' => 'Yassien', 'created_at' => '25-03-18 04:00:00'],
+        //     ['id' => 3, 'title' => 'HTML', 'posted_by' => 'Maged', 'created_at' => '23-11-25 02:00:00'],
+        //     ['id' => 4, 'title' => 'CSS', 'posted_by' => 'Abdo', 'created_at' => '26-03-19 01:15:00'],
+        //     ['id' => 5, 'title' => 'Laravel', 'posted_by' => 'Khaled', 'created_at' => '26-01-01 11:15:00']
+        // ];
+        // return view('posts.index', ['posts' => $allPosts]);
     }
 
     // Show Action
