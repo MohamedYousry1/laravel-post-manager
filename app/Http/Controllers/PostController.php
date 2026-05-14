@@ -29,13 +29,10 @@ class PostController extends Controller
     }
 
     // Show Action
-    public function show($postId) // this is how to get the post id or URL Parameter value in variable then return this var
+    public function show(Post $post) // This way called Route Model Binding
     {
         // select * from posts where id = $postId;
-        
-        // // get id, if not exist 404 not found
-        $singlePostFromDB = Post::findOrFail($postId);
-        return view('posts.show', ['post' => $singlePostFromDB]);
+        return view('posts.show', ['post' => $post]);
     }
 
     // Create Action
