@@ -31,9 +31,14 @@ class PostController extends Controller
     // Show Action
     public function show($postId) // this is how to get the post id or URL Parameter value in variable then return this var
     {
-        $singlePost = ['id' => 1, 'title' => 'Ruby', 'description' => 'This is description of this post', 'posted_by' => 'Mohamed', 'created_at' => '22-10-10 09:00:00'];
-        $userInfo = ['email' => 'mohamedyo44@test.com', 'name' => 'Yosry'];
-        return view('posts.show', ['post' => $singlePost], ['user' => $userInfo]);
+        // select * from posts where id = $postId;
+
+        // handle error if id is not exist go to index page
+        $singlePostFromDB = Post::find($postId);
+        if(is_null($singlePostFromDB)){
+            return to_route('posts.index');
+        }
+        return view('posts.show', ['post' => $singlePostFromDB]);
     }
 
     // Create Action
