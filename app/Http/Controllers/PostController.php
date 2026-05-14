@@ -32,12 +32,9 @@ class PostController extends Controller
     public function show($postId) // this is how to get the post id or URL Parameter value in variable then return this var
     {
         // select * from posts where id = $postId;
-
-        // handle error if id is not exist go to index page
-        $singlePostFromDB = Post::find($postId);
-        if(is_null($singlePostFromDB)){
-            return to_route('posts.index');
-        }
+        
+        // // get id, if not exist 404 not found
+        $singlePostFromDB = Post::findOrFail($postId);
         return view('posts.show', ['post' => $singlePostFromDB]);
     }
 
