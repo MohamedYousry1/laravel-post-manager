@@ -45,7 +45,14 @@ class PostController extends Controller
         $description = request()->description;
         $postCreator = request()->post_creator;
         // dd($data, $title, $description, $postCreator);
-        // 2- store the user data in database
+
+        $post = new Post;
+ 
+        $post->title = $title;
+        $post->description = $description;
+ 
+        $post->save(); // When we call the save method, a record will be inserted into the database. INSERT INTO posts (title, description)
+        // 2- store the submitted data in database
 
         // 3- redirection to posts.index
         return to_route('posts.index');
