@@ -39,19 +39,16 @@ class PostController extends Controller
     {
         // 1- get the user data
         // $request = request();  // global helper method
-        // dd($request->title, $request->name, $request->all());  // all() ->> Method of Eloquent Model 
-        $data = request()->all();
+        $data = request()->all(); // $data = $_POST (in php native) && all() ->> Method of Eloquent Model
         $title   = request()->title;
         $description = request()->description;
         $postCreator = request()->post_creator;
-        // dd($data, $title, $description, $postCreator);
 
-        $post = new Post;
- 
-        $post->title = $title;
-        $post->description = $description;
- 
-        $post->save(); // When we call the save method, a record will be inserted into the database. INSERT INTO posts (title, description)
+
+        $post = Post::create([
+            'title' => $title,
+            'description' => $description,
+        ]);
         // 2- store the submitted data in database
 
         // 3- redirection to posts.index
@@ -59,30 +56,40 @@ class PostController extends Controller
     }
 
     // Edit Action
-    public function edit()
+    public function edit(Post $post)
     {
-        $editPost = ['title' => 'Ruby', 'description' => 'This is description of this post', 'post_creator' => 'Mohamed'];
-        return view('posts.edit', ['post' => $editPost]);
+        // select * from users
+        $usersFromDB = User::all();
+        return view('posts.edit', ['users' => $usersFromDB, 'post' => $post]);
     }
 
     // Update Action
-    public function update()
+    public function update($postId)
     {
-        // 1- get the user data
-        // $data = request()->all();
-        // $title   = request()->title;
-        // $description = request()->description;
-        // $postCreator = request()->post_creator;
-        // dd($title, $description, $postCreator);
-        // 2- Update the user data in database
+        // 1- get the post data
+        $title   = request()->title;
+        $description = request()->description;
+        $postCreator = request()->post_creator;
+        // 1- select * from posts where id = $postId;
+        $singlePostFromDB = Post::find($postId);
+        // 2- Update the submited post data in database
+        $singlePostFromDB->update([
+            'title'=>$title,
+            'description'=>$description
+        ]);
         // 3- redirection to posts.index
-        return to_route('posts.show', 1);
+        return to_route('posts.show', $postId);
     }
 
-    public function destroy()
+    public function destroy($postId)
     {
         // 1- delete from DataBase
+          //select or find post from database
+          //delete the post from database
+        $post = Post::find($postId);
+        $post->delete();
+
         // 2- Redirect to posts.index
-        return to_route('posts.index');
+        return to_route('posts.index', $postId);
     }
 }
