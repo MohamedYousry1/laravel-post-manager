@@ -48,6 +48,7 @@ class PostController extends Controller
         $post = Post::create([
             'title' => $title,
             'description' => $description,
+            'user_id' => $postCreator
         ]);
         // 2- store the submitted data in database
 
@@ -66,16 +67,18 @@ class PostController extends Controller
     // Update Action
     public function update($postId)
     {
-        // 1- get the post data
+        // 1- get the data to update
         $title   = request()->title;
         $description = request()->description;
         $postCreator = request()->post_creator;
         // 1- select * from posts where id = $postId;
         $singlePostFromDB = Post::find($postId);
-        // 2- Update the submited post data in database
+        // 2- Update the submited user data in database
         $singlePostFromDB->update([
             'title'=>$title,
-            'description'=>$description
+            'description'=>$description,
+            'user_id' => $postCreator
+
         ]);
         // 3- redirection to posts.index
         return to_route('posts.show', $postId);
