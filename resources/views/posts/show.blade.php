@@ -14,12 +14,12 @@
 </div>
 <div class="card mt-4">
     <div class="card-header">
-        Mohamed Post Info
+    {{$post->user ? $post->user->name : 'Not Found'}} Post Info
     </div>
     <div class="card-body">
-        <h5 class="card-title">Name: Mohamed</h5>
-        <p class="card-text">Email: mohamedyo44@test.com</p>
-        <p class="card-text">Created At: Thursday 14th of may 2026</p>
+        <h5 class="card-title">Name: {{$post->user ? $post->user->name : 'Not Found'}}</h5>
+        <p class="card-text">Email: {{$post->user ? $post->user->email : 'Not Found'}}</p>
+        <p class="card-text">Created At: {{$post->created_at}}</p>
     </div>
 </div>
 @endsection
