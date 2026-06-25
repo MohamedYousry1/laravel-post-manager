@@ -19,7 +19,8 @@
     <div class="card-body">
         <h5 class="card-title">Name: {{$post->user ? $post->user->name : 'Not Found'}}</h5>
         <p class="card-text">Email: {{$post->user ? $post->user->email : 'Not Found'}}</p>
-        <p class="card-text">Created At: {{$post->created_at}}</p>
+        <!-- laravel uses carbon pakage to call toFormattedDayDateString(). -->
+        <p class="card-text">Created At: {{$post->created_at->toFormattedDayDateString()}}</p>
     </div>
 </div>
 @endsection
