@@ -671,5 +671,111 @@ textarea.form-control { min-height: 120px; resize: vertical; }
     .pro-post-card:hover, .pro-card-hover:hover, .pro-feature:hover { transform: none; }
 }
 
+/* ---------- Pagination ---------- */
+.pro-pagination {
+    margin-top: 2.5rem;
+    padding: 1.35rem 1.5rem;
+    background: #fff;
+    border: 1px solid var(--pro-line);
+    border-radius: var(--pro-radius);
+    box-shadow: var(--pro-shadow-sm);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem 1.25rem;
+}
+
+.pro-pagination-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: .75rem 1rem;
+}
+
+.pro-pagination-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--pro-muted);
+    font-size: .92rem;
+    font-weight: 500;
+}
+.pro-pagination-label .bi { color: var(--pro-primary); font-size: 1rem; }
+.pro-pagination-label strong { color: var(--pro-ink); font-weight: 700; }
+
+.pro-pagination-list {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: .35rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.pro-pagination-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    min-width: 42px;
+    height: 42px;
+    padding: 0 .85rem;
+    border-radius: 12px;
+    border: 1px solid var(--pro-line);
+    background: #fff;
+    color: var(--pro-ink-soft);
+    font-weight: 600;
+    font-size: .92rem;
+    line-height: 1;
+    text-decoration: none;
+    transition: all .2s ease;
+    user-select: none;
+}
+.pro-pagination-btn:hover {
+    background: var(--pro-primary-soft);
+    border-color: rgba(79, 70, 229, .25);
+    color: var(--pro-primary);
+}
+.pro-pagination-btn.is-active {
+    background: var(--pro-gradient);
+    border-color: transparent;
+    color: #fff;
+    box-shadow: 0 8px 18px -8px rgba(79, 70, 229, .65);
+    pointer-events: none;
+}
+.pro-pagination-btn.is-disabled {
+    opacity: .45;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+.pro-pagination-btn--nav {
+    min-width: auto;
+    padding: 0 1rem;
+}
+.pro-pagination-btn--ellipsis {
+    border-color: transparent;
+    background: transparent;
+    min-width: 32px;
+    padding: 0;
+    pointer-events: none;
+    color: var(--pro-muted);
+}
+
+@media (max-width: 576px) {
+    .pro-pagination {
+        flex-direction: column;
+        align-items: stretch;
+        text-align: center;
+    }
+    .pro-pagination-meta {
+        justify-content: center;
+    }
+    .pro-pagination-list {
+        justify-content: center;
+    }
+}
+
 /* ---------- Container tweak ---------- */
 .container, .container-fluid { max-width: 1180px; }
