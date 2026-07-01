@@ -25,6 +25,7 @@
     @if ($posts->count() > 0)
         {{-- Card grid --}}
         <div class="pro-post-grid">
+            @php $counter = 0; @endphp
             @foreach ($posts as $post)
                 @php
                     // Deterministic cover image based on post id (no logic change — pure presentation)
@@ -39,11 +40,12 @@
                     if ($initials === '' || $authorName === 'Not Found') {
                         $initials = '—';
                     }
+
                 @endphp
 
                 <article class="pro-post-card">
                     <a href="{{ route('posts.show', $post->id) }}" class="pro-post-cover">
-                        <span class="pro-post-id">#{{ $post->id }}</span>
+                        <span class="pro-post-id"># {{ ++$counter}} </span>  <!-- relogic -->
                     </a>
                     <div class="pro-post-body">
                         <h2 class="pro-post-title">
@@ -79,6 +81,10 @@
                 </article>
             @endforeach
         </div>
+
+        @if ($posts->hasPages())
+            {{ $posts->links('vendor.pagination.pro') }}
+        @endif
 
     @else
         {{-- Empty state --}}
