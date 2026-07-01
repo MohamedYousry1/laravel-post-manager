@@ -1,46 +1,97 @@
 @extends('layouts.app')
 
-@section('title') Index @endsection
-@section('content') <!-- body content -->
-<div class="text-center mt-4">
-    <a href="{{ route('posts.create') }}" class="btn btn-success w-100 w-sm-auto">Create Post</a>
-</div>
+@section('title', 'All Posts — Yosry Blog')
 
-<div class="table-responsive mt-4">
-    <table class="table table-striped align-middle">
-        <thead>
-            <tr>
-                <th scope="col" class="d-none d-md-table-cell">ID</th>
-                <th scope="col">Title</th>
-                <th scope="col" class="d-none d-lg-table-cell">Posted By</th>
-                <th scope="col" class="d-none d-md-table-cell">Created At</th>
-                <th scope="col">Actions</th>
-            </tr>
-        </thead>
-        <tbody>
+@section('content')
+
+{{-- Page header --}}
+<header class="pro-page-header">
+    <div class="container">
+        <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
+            <div>
+                <span class="pro-eyebrow mb-2"><i class="bi bi-collection"></i> Posts Library</span>
+                <h1>All Posts</h1>
+                <p class="pro-subtitle">Browse, read, edit or remove posts from your blog studio.</p>
+            </div>
+            <a href="{{ route('posts.create') }}" class="btn btn-success btn-lg">
+                <i class="bi bi-plus-lg me-1"></i> Create Post
+            </a>
+        </div>
+    </div>
+</header>
+
+<div class="container pb-5">
+
+    @if ($posts->count() > 0)
+        {{-- Card grid --}}
+        <div class="pro-post-grid">
             @foreach ($posts as $post)
-            <tr>
-                <td class="d-none d-md-table-cell">{{ $post->id }}</td>
-                <td class="text-truncate" style="max-width: 180px;">{{ $post->title }}</td>
-                <!-- created_at is a timestamp column that Laravel automatically converts into a Carbon object so you can format and compare dates easily. -->
-                <!-- Carbon is an external PHP package for date and time manipulation. Laravel uses it to make working with datetime values easier. -->
-                <td class="d-none d-lg-table-cell">{{ $post->user ? $post->user->name : 'Not Found' }}</td>
-                <td class="d-none d-md-table-cell">{{ $post->created_at->toFormattedDateString() }}</td>
-                <td>
-                    <div class="d-flex flex-column flex-sm-row gap-1">
-                        <a href="{{ route('posts.show', $post->id) }}" class="btn btn-sm btn-info">View</a>
-                        <a href="{{ route('posts.edit', $post->id) }}" class="btn btn-sm btn-primary">Edit</a>
-                        <form method="POST" action="{{ route('posts.destroy', $post->id) }}" onsubmit="return confirmDelete()">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn btn-sm btn-danger w-100">Delete</button>
-                        </form>
+                @php
+                    // Deterministic cover image based on post id (no logic change — pure presentation)
+                   
+                    $authorName = $post->user ? $post->user->name : 'Not Found';
+                    $initials = '';
+                    foreach (explode(' ', $authorName) as $word) {
+                        if ($word !== '' && $word !== 'Not') {
+                            $initials .= strtoupper(substr($word, 0, 1));
+                        }
+                    }
+                    if ($initials === '' || $authorName === 'Not Found') {
+                        $initials = '—';
+                    }
+                @endphp
+
+                <article class="pro-post-card">
+                    <a href="{{ route('posts.show', $post->id) }}" class="pro-post-cover">
+                        <span class="pro-post-id">#{{ $post->id }}</span>
+                    </a>
+                    <div class="pro-post-body">
+                        <h2 class="pro-post-title">
+                            <a href="{{ route('posts.show', $post->id) }}" class="text-decoration-none text-reset">
+                                {{ $post->title }}
+                            </a>
+                        </h2>
+
+                        <div class="pro-post-meta">
+                            <span class="pro-avatar">{{ $initials }}</span>
+                            <span><i class="bi bi-person me-1"></i>{{ $authorName }}</span>
+                            <span><i class="bi bi-calendar3 me-1"></i>{{ $post->created_at->toFormattedDateString() }}</span>
+                        </div>
+
+                        <p class="pro-post-description">{{ $post->description }}</p>
+
+                        <div class="pro-post-actions">
+                            <a href="{{ route('posts.show', $post->id) }}" class="btn btn-sm btn-info">
+                                <i class="bi bi-eye me-1"></i> View
+                            </a>
+                            <a href="{{ route('posts.edit', $post->id) }}" class="btn btn-sm btn-primary">
+                                <i class="bi bi-pencil me-1"></i> Edit
+                            </a>
+                            <form method="POST" action="{{ route('posts.destroy', $post->id) }}" onsubmit="return confirmDelete()" class="d-inline">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-sm btn-danger">
+                                    <i class="bi bi-trash me-1"></i> Delete
+                                </button>
+                            </form>
+                        </div>
                     </div>
-                </td>
-            </tr>
+                </article>
             @endforeach
-        </tbody>
-    </table>
+        </div>
+
+    @else
+        {{-- Empty state --}}
+        <div class="pro-empty">
+            <div class="pro-empty-icon"><i class="bi bi-journal-x"></i></div>
+            <h2 class="h4 mb-2">No posts yet</h2>
+            <p class="text-muted mb-4">Your blog library is empty. Create your very first post to get started.</p>
+            <a href="{{ route('posts.create') }}" class="btn btn-success btn-lg">
+                <i class="bi bi-plus-lg me-1"></i> Create Post
+            </a>
+        </div>
+    @endif
+
 </div>
 
 <script>
@@ -48,4 +99,5 @@
         return confirm("Are you sure you want to delete this post?");
     }
 </script>
+
 @endsection
