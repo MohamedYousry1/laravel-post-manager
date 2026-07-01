@@ -44,3 +44,7 @@ Route::put('/posts/{post}',[PostController::class, 'update'])->name('posts.updat
 
 // 6] Delete Post
 Route::delete('/posts/{post}', [PostController::class, 'destroy'])->name('posts.destroy');
+
+
+// 1- structure change for database (create table, edit column, remove column)
+// 2- operations on database (INSERT record, EDIT record, DELETE record)
