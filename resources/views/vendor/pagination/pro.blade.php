@@ -30,26 +30,34 @@
                 @endif
             </li>
 
-            {{-- Page numbers --}}
-            @foreach ($elements as $element)
-                @if (is_string($element))
-                    <li>
-                        <span class="pro-pagination-btn pro-pagination-btn--ellipsis" aria-hidden="true">&hellip;</span>
-                    </li>
-                @endif
+            {{-- Page numbers: current page + next 2, then ... , then last page --}}
+            @php
+                $current = $paginator->currentPage();
+                $last = $paginator->lastPage();
+                $visibleEnd = min($current + 2, $last);
+            @endphp
 
-                @if (is_array($element))
-                    @foreach ($element as $page => $url)
-                        <li>
-                            @if ($page == $paginator->currentPage())
-                                <span class="pro-pagination-btn is-active" aria-current="page">{{ $page }}</span>
-                            @else
-                                <a href="{{ $url }}" class="pro-pagination-btn" aria-label="Go to page {{ $page }}">{{ $page }}</a>
-                            @endif
-                        </li>
-                    @endforeach
-                @endif
-            @endforeach
+            @for ($page = $current; $page <= $visibleEnd; $page++)
+                <li>
+                    @if ($page == $current)
+                        <span class="pro-pagination-btn is-active" aria-current="page">{{ $page }}</span>
+                    @else
+                        <a href="{{ $paginator->url($page) }}" class="pro-pagination-btn" aria-label="Go to page {{ $page }}">{{ $page }}</a>
+                    @endif
+                </li>
+            @endfor
+
+            @if ($visibleEnd < $last - 1)
+                <li>
+                    <span class="pro-pagination-btn pro-pagination-btn--ellipsis" aria-hidden="true">&hellip;</span>
+                </li>
+            @endif
+
+            @if ($visibleEnd < $last)
+                <li>
+                    <a href="{{ $paginator->url($last) }}" class="pro-pagination-btn" aria-label="Go to page {{ $last }}">{{ $last }}</a>
+                </li>
+            @endif
 
             {{-- Next --}}
             <li>
