@@ -15,7 +15,21 @@ class PostController extends Controller
     public function index()
     {
         // select * from posts;
-        $postsFromDB = Post::orderBy('created_at', 'desc')->paginate(3);
+        $search = request('search');
+        $postsFromDB = Post::when($search, function ($query) use ($search) {
+            $query->whereFullText(['title', 'description'], $search);
+        })
+            ->orderBy('created_at', 'desc')
+            ->paginate(6)
+            ->withQueryString();
+
+        if (request('page') > $postsFromDB->lastPage() && $postsFromDB->lastPage() > 0) {
+            return redirect()->route('posts.index', [
+                'search' => $search,
+                'page' => $postsFromDB->lastPage(),
+            ]);
+        }
+
         return view('posts.index', ['posts' => $postsFromDB]);
     }
 
