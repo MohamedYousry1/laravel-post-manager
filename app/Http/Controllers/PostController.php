@@ -14,8 +14,9 @@ class PostController extends Controller
 {
     public function index()
     {
-        // select * from posts;
+        // Full-Text Search
         $search = request('search');
+        // select * from posts;
         $postsFromDB = Post::when($search, function ($query) use ($search) {
             $query->whereFullText(['title', 'description'], $search);
         })
